@@ -39,7 +39,7 @@ const Signup = () => {
 else {
   console.error("Token or user missing in response");
 }
-navigate("/dashboard");
+navigate("/");
 
   } catch (error) {
     console.error("Registration Failed:", error.response?.data || error.message);

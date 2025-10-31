@@ -18,7 +18,7 @@ const Sidebar = () => {
   // const [itemscard, setItemscard] = useState(items)
   useEffect(() => {
   const token = localStorage.getItem("token");
-  if (!token) navigate("/login");
+  if (!token) navigate("/Login");
 }, []);
 
   const DeleteUser = () => { 

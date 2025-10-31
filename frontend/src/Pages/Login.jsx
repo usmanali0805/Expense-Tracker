@@ -29,7 +29,7 @@ const Login = () => {
     } catch (error) {
       console.error("Login Failed:", error.response?.data || error.message);
     }
-    navigate("/dashboard");
+    navigate("/");
   };
   localStorage.getItem("token")
 localStorage.getItem("user")

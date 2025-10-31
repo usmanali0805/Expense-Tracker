@@ -7,17 +7,13 @@ import Signup from './Pages/Signup'
 import Homepage from './Pages/Homepage'
 import Income from './Pages/Income'
 import Expence from './Pages/Expence'
-import Sidebar from './assets/components/Sidebar'
 
 function App() {
 
   return (
     <div >
-    {/* <Navbar/> */}
-          {/* <Sidebar /> */}
-
       <Routes>
-        <Route path="/dashboard" element={<Homepage/>}/>
+        <Route path="/" element={<Homepage/>}/>
         <Route path="/Income" element={<Income/>}/>
         <Route path="/Expence" element={<Expence/>}/>
         <Route path="/Login" element={<Login/>}/>
