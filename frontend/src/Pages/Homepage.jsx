@@ -24,7 +24,6 @@ localStorage.getItem("user")
     <>
       <Navbar />
       <div className="w-full h-full flex items-center justify-between">
-        <Sidebar/>
         <section className="h-full w-full flex flex-col gap-10 p-5">
         <header className="flex gap-5" >
           <Card icon={<CreditCard/>} text={"Total Balance"} price={79100} color={"bg-violet-600"}/>

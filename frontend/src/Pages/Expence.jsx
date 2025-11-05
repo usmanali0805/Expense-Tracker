@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { CreditCard, TrendingDown, PlusCircle } from "lucide-react";
-import Sidebar from "../assets/components/Sidebar";
+import axiosInstance from "../utils/axiosinstance";
+import { API_PATHS } from "../utils/apiPath";
 
 const Expense = () => {
+    const [expenses, setExpenses] = useState([])
   const [expenseData, setExpenseData] = useState([
     { title: "Shopping", date: "2025-10-28", price: 12000 },
     { title: "Travel", date: "2025-10-25", price: 5000 },
@@ -10,6 +12,24 @@ const Expense = () => {
     { title: "Electricity Bill", date: "2025-10-20", price: 6500 },
     { title: "Loan Repayment", date: "2025-10-18", price: 7400 },
   ]);
+
+    useEffect(() => {
+    // fetchExpenses();
+  }, []);
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await axiosInstance.get(
+        API_PATHS.EXPENSE.GET_ALL_EXPENSE
+      );
+      setExpenses(response.data.expenses || []);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    } finally {
+      setLoading(false);
+    }
+    console.log(expenses)
+  };
 
   const [showForm, setShowForm] = useState(false);
   const [newExpense, setNewExpense] = useState({ title: "", date: "", price: "" });
@@ -26,7 +46,6 @@ const Expense = () => {
 
   return (
     <div className="flex w-full h-full">
-      <Sidebar />
       <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center py-8 px-4">
         {/* Header */}
         <div className="w-full max-w-3xl flex justify-between items-center mb-6">

@@ -3,8 +3,6 @@ import CARD_2 from "../assets/images/Card2.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, TrendingUpDown } from "lucide-react";
 import axiosInstance from "../utils/axiosinstance";
-import { API_PATHS } from "../utils/apiPath";
-
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

@@ -7,35 +7,22 @@ import axiosInstance from "../utils/axiosinstance";
 const Income = () => {
   const [incomes, setIncomes] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [newIncome, setNewIncome] = useState({
-    title: "",
-    date: "",
-    price: "",
-  });
+  const [newIncome, setNewIncome] = useState({});
 
-  // ✅ Fetch all incomes from backend
-  useEffect(() => {
     const fetchIncomes = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axiosInstance.get(
-          API_PATHS.INCOME.GET_ALL_INCOME,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("Fetched Incomes:", response.data);
-        setIncomes(response.data?.incomes || []);
-      } catch (error) {
-        console.error("Error fetching incomes:", error.message);
-      }
-    };
-    fetchIncomes();
-  }, []);
+    try {
+      const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME);
+      setIncomes(response.data.incomes || []);
+    } catch (error) {
+      console.error("Error fetching incomes:", error);
+    } finally {
+    }
+  };
+  // useEffect(() => {
+  //   fetchIncomes();
+  // }, []);
 
-  // ✅ Add new income (POST request)
+  // Add new income (POST request)
   const handleAddIncomeValue = async () => {
     if (!newIncome.title || !newIncome.date || !newIncome.price) {
       alert("Please fill all fields");
@@ -68,7 +55,7 @@ const Income = () => {
     }
   };
 
-  // ✅ Calculate total income
+  // Calculate total income
   const totalIncome = incomes.reduce(
     (acc, item) => acc + Number(item.price || item.amount || 0),
     0
@@ -76,7 +63,6 @@ const Income = () => {
 
   return (
     <div className="flex w-full h-full">
-      <Sidebar />
       <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center py-8 px-4">
         {/* Header */}
         <div className="w-full max-w-3xl flex justify-between items-center mb-6">

@@ -1,26 +1,29 @@
-import { useState } from 'react'
-import Navbar from './assets/components/Navbar'
-import React from 'react'
-import { Routes , Route , Router} from 'react-router-dom'
-import Login from './Pages/Login'
-import Signup from './Pages/Signup'
-import Homepage from './Pages/Homepage'
-import Income from './Pages/Income'
-import Expence from './Pages/Expence'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Login from "./Pages/Login";
+import Navbar from "./assets/components/Navbar"; 
+import Signup from "./Pages/Signup"; 
+import Homepage from "./Pages/Homepage"; 
+import Income from "./Pages/Income"; 
+import Expence from "./Pages/Expence";
+import Layout from "./Layout";
 
 function App() {
-
   return (
-    <div >
+    <div>
       <Routes>
-        <Route path="/" element={<Homepage/>}/>
-        <Route path="/Income" element={<Income/>}/>
-        <Route path="/Expence" element={<Expence/>}/>
-        <Route path="/Login" element={<Login/>}/>
-        <Route path="/Signup" element={<Signup/>}/>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Homepage />} />
+          <Route path="income" element={<Income />} />
+          <Route path="expence" element={<Expence />} />
+        </Route>
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/homepage" element={<Homepage />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
