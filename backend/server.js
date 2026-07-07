@@ -1,4 +1,6 @@
 // NODE MODULES...
+import dns from 'dns'
+dns.setServers(['1.1.1.1' , '8.8.8.8'])
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -27,6 +29,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+console.log(process.env.MONGODB_URI)
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

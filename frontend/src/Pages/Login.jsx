@@ -3,6 +3,7 @@ import CARD_2 from "../assets/images/Card2.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, TrendingUpDown } from "lucide-react";
 import axiosInstance from "../utils/axiosinstance";
+import { API_PATHS } from "../utils/apiPath";
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -22,16 +23,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, formData);
-      localStorage.setItem("token", JSON.stringify(response.data.token));
+      localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
       console.error("Login Failed:", error.response?.data || error.message);
     }
     navigate("/");
   };
-  localStorage.getItem("token")
-localStorage.getItem("user")
-
 
   return (
     <div className="flex w-full justify-between h-full gap-10 overflow-hidden">

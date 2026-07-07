@@ -10,7 +10,7 @@ const Sidebar = () => {
   useEffect(() => {
     const userdata = JSON.parse(localStorage.getItem("user"))
     setUser(userdata)
-    const usertoken = JSON.parse(localStorage.getItem("token"))
+    const usertoken = localStorage.getItem("token")
     setToken(usertoken)
   }, [])
 

@@ -26,7 +26,7 @@ const Expense = () => {
     } catch (error) {
       console.error("Error fetching expenses:", error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
     console.log(expenses)
   };

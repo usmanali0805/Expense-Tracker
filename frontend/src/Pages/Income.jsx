@@ -15,12 +15,11 @@ const Income = () => {
       setIncomes(response.data.incomes || []);
     } catch (error) {
       console.error("Error fetching incomes:", error);
-    } finally {
-    }
+    } 
   };
-  // useEffect(() => {
-  //   fetchIncomes();
-  // }, []);
+  useEffect(() => {
+    fetchIncomes();
+  }, []);
 
   // Add new income (POST request)
   const handleAddIncomeValue = async () => {

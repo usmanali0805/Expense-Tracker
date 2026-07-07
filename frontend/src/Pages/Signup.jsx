@@ -30,7 +30,6 @@ const Signup = () => {
 
   try {
     const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, formData);
-    console.log("Registered Successfully:", response.data);
 
     if (!localStorage.getItem("user")) {
   localStorage.setItem("token", JSON.stringify(response.data.token));
