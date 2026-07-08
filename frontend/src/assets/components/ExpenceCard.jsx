@@ -2,7 +2,15 @@ import React from "react";
 import { TrendingUp, ShoppingBag } from "lucide-react";
 
 const ExpenceCard = ({ item }) => {
-  const isPositive = item.price > 0;
+  let isPositive;
+  if (item.type == "income") {
+    console.log( item.type ,  "true");
+    isPositive = true;
+    //  console.log(item.type)
+  } else {
+    console.log( item.type,  "false");
+    isPositive = false;
+  }
   const bgColor = isPositive ? "bg-green-100" : "bg-red-100";
   const textColor = isPositive ? "text-green-600" : "text-red-600";
   const icon = <TrendingUp size={14} />;
@@ -14,15 +22,15 @@ const ExpenceCard = ({ item }) => {
           <ShoppingBag />
         </span>
         <div>
-          <h5 className="text-sm font-bold">{item.title}</h5>
-          <p className="text-[12px] text-gray-500">{item.date}</p>
+          <h5 className="text-sm font-bold">{item.source || item.icon}</h5>
+          <p className="text-[12px] text-gray-500">{item.date.slice(0, 10)}</p>
         </div>
       </div>
 
       <span
         className={`py-1 px-3 ${bgColor} ${textColor} font-semibold rounded-full flex items-center gap-1`}
       >
-        <p>{item.price}</p>
+        <p>{item.amount}</p>
         {icon}
       </span>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Wallet, TrendingUp, PlusCircle } from "lucide-react";
+import { Wallet, TrendingUp, PlusCircle, Trash2 } from "lucide-react";
 import Sidebar from "../assets/components/Sidebar";
 import { API_PATHS } from "../utils/apiPath";
 import axiosInstance from "../utils/axiosinstance";
@@ -9,13 +9,13 @@ const Income = () => {
   const [showForm, setShowForm] = useState(false);
   const [newIncome, setNewIncome] = useState({});
 
-    const fetchIncomes = async () => {
+  const fetchIncomes = async () => {
     try {
       const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME);
       setIncomes(response.data.incomes || []);
     } catch (error) {
       console.error("Error fetching incomes:", error);
-    } 
+    }
   };
   useEffect(() => {
     fetchIncomes();
@@ -28,12 +28,14 @@ const Income = () => {
       return;
     }
 
+    const { id } = JSON.parse(localStorage.getItem("user"));
     try {
       const token = localStorage.getItem("token");
       const response = await axiosInstance.post(
-        "http://localhost:5000/api/income/create",
+        "http://localhost:5000/api/v1/income/add",
         {
-          title: newIncome.title,
+          userId: id,
+          source: newIncome.title,
           amount: newIncome.price,
           date: newIncome.date,
         },
@@ -41,7 +43,7 @@ const Income = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       console.log("Income Added:", response.data);
 
@@ -54,10 +56,26 @@ const Income = () => {
     }
   };
 
+  const handleDeleteIncome = async (id) => {
+    const confirmDelete = window.confirm(
+      "Kya aap is transaction ko delete karna chahte hain?",
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
+
+      // Frontend se turant hata do (no refetch needed)
+      setIncomes((prev) => prev.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error("Error deleting income:", error.message);
+      alert("Delete nahi ho saka, dobara try karein.");
+    }
+  };
   // Calculate total income
   const totalIncome = incomes.reduce(
     (acc, item) => acc + Number(item.price || item.amount || 0),
-    0
+    0,
   );
 
   return (
@@ -81,7 +99,7 @@ const Income = () => {
             onClick={() => setShowForm(!showForm)}
             className="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-all"
           >
-            <PlusCircle size={18} /> Add Income
+            <PlusCircle size={18} /> Add New Income
           </button>
         </div>
 
@@ -133,23 +151,35 @@ const Income = () => {
           ) : (
             incomes.map((item, index) => (
               <div
-                key={index}
-                className="flex justify-between items-center w-full p-3 border-b last:border-none hover:bg-gray-50 transition-all duration-200"
+                key={item._id || index}
+                className="group flex justify-between items-center w-full p-3 border-b last:border-none hover:bg-gray-50 transition-all duration-200"
               >
                 <div className="flex items-center gap-3">
                   <span className="bg-orange-100 p-2 rounded-full text-orange-600">
                     <Wallet size={18} />
                   </span>
                   <div>
-                    <h5 className="text-sm font-bold">{item.title}</h5>
+                    <h5 className="text-sm font-bold">{item.source}</h5>
                     <p className="text-[12px] text-gray-500">
                       {item.date?.slice(0, 10)}
                     </p>
                   </div>
                 </div>
-                <span className="py-1 px-3 bg-green-100 text-green-600 font-semibold rounded-[10px] flex items-center gap-1">
-                  + Rs. {item.price || item.amount}
-                </span>
+
+                <div className="flex items-center gap-2">
+                  <span className="py-1 px-3 bg-green-100 text-green-600 font-semibold rounded-[10px] flex items-center gap-1">
+                    + Rs. {item.price || item.amount}
+                  </span>
+
+                  {/* Delete button - hover pe visible hoga */}
+                  <button
+                    onClick={() => handleDeleteIncome(item._id)}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-2 rounded-full text-gray-400 hover:bg-red-100 hover:text-red-600"
+                    title="Delete"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ))
           )}
