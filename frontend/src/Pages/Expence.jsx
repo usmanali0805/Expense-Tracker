@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { CreditCard, TrendingDown, PlusCircle, EthernetPort, Trash2 } from "lucide-react";
+import {
+  CreditCard,
+  TrendingDown,
+  PlusCircle,
+  EthernetPort,
+  Trash2,
+} from "lucide-react";
 import axiosInstance from "../utils/axiosinstance";
 import { API_PATHS } from "../utils/apiPath";
 
@@ -13,14 +19,16 @@ const Expense = () => {
     price: "",
   });
 
-    const fetchExpense = async () => {
+  const fetchExpense = async () => {
     try {
-      const response = await axiosInstance.get(API_PATHS.EXPENSE.GET_ALL_EXPENSE);
-      const {data} = response
+      const response = await axiosInstance.get(
+        API_PATHS.EXPENSE.GET_ALL_EXPENSE,
+      );
+      const { data } = response;
       setExpenses(data.expenses || []);
     } catch (error) {
       console.error("Error fetching incomes:", error);
-    } 
+    }
   };
   useEffect(() => {
     fetchExpense();
@@ -32,51 +40,50 @@ const Expense = () => {
       alert("Please fill all fields");
       return;
     }
-    console.log(newExpense.title , newExpense.date , newExpense.price)
+    console.log(newExpense.title, newExpense.date, newExpense.price);
 
-    const {id}  = JSON.parse(localStorage.getItem("user"))
+    const { id } = JSON.parse(localStorage.getItem("user"));
     try {
       const token = localStorage.getItem("token");
       const response = await axiosInstance.post(
         "http://localhost:5000/api/v1/expense/add",
         {
-          userId : id,
+          userId: id,
           icon: newExpense.title,
           amount: newExpense.price,
           date: newExpense.date,
-          category: 'Expense'
-
+          category: "Expense",
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       console.log("Income Added:", response.data);
 
       // Update frontend immediately
-      setExpenses((prev) => [...prev, response.data.income]);
+      setExpenses((prev) => [...prev, response.data.expense]);
       setNewExpense({ title: "", date: "", price: "" });
       setShowForm(false);
-      fetchExpense()
+      fetchExpense();
     } catch (error) {
       console.error("Error adding income:", error.message);
     }
   };
 
-  const HandleDeleteExpense = async (id) =>{
+  const HandleDeleteExpense = async (id) => {
     const isConfirmed = window.confirm("Do you want to delete this Expense");
-    if(!isConfirmed) return !isConfirmed;
+    if (!isConfirmed) return ;
     try {
       await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id));
-      setExpenses((prev)=> prev.filter((item)=>(item._id !== id)))
+      setExpenses((prev) => prev.filter((item) => item._id !== id));
     } catch (error) {
-      console.error(error.message)
+      console.error(error.message);
     }
-  }
+  };
   const totalExpense = expenses.reduce(
-    (acc, item) => acc + Number(item.amount),
+    (acc, item) => acc + Number(item.price || item.amount || 0),
     0,
   );
 
@@ -158,7 +165,9 @@ const Expense = () => {
                 </span>
                 <div>
                   <h5 className="text-sm font-bold">{item.icon}</h5>
-                  <p className="text-[12px] text-gray-500">{item?.date.slice(0 ,10)}</p>
+                  <p className="text-[12px] text-gray-500">
+                    {item?.date.slice(0, 10)}
+                  </p>
                 </div>
               </div>
 
@@ -168,8 +177,8 @@ const Expense = () => {
                 </span>
 
                 {/* Delete button - abhi sirf UI, functionality baad mein */}
-                <button 
-                onClick={HandleDeleteExpense}
+                <button
+                  onClick={()=>HandleDeleteExpense(item._id)}
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-2 rounded-full text-gray-400 hover:bg-red-100 hover:text-red-600"
                   title="Delete"
                 >

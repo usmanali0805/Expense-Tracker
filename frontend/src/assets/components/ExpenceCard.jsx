@@ -4,11 +4,9 @@ import { TrendingUp, ShoppingBag } from "lucide-react";
 const ExpenceCard = ({ item }) => {
   let isPositive;
   if (item.type == "income") {
-    console.log( item.type ,  "true");
     isPositive = true;
     //  console.log(item.type)
   } else {
-    console.log( item.type,  "false");
     isPositive = false;
   }
   const bgColor = isPositive ? "bg-green-100" : "bg-red-100";

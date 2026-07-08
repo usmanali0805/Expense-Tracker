@@ -29,7 +29,6 @@ const Homepage = () => {
         ...income,
         type: "income",
       }));
-      console.log(income);
       const expense = expensedata.map((expense) => ({
         ...expense,
         type: "expence",
@@ -37,17 +36,19 @@ const Homepage = () => {
       setIncomes(income);
 
       const merge = [...income, ...expense];
-      merge.sort;
       // (a, b) => new Date(b.date) - new Date(a.date)
       merge.sort((a, b) => new Date(b.date) - new Date(a.date));
-      merge && setTransections(merge);
+      if (merge) {
+        setTransections(merge);
+        console.log(merge & transections)
+      }
     } catch (error) {
       console.log(error.message);
     }
   };
 
   useEffect(() => {
-    Transaction();
+    Transaction()
   }, []);
 
   const totalIncome = incomes.reduce(
@@ -95,9 +96,10 @@ const Homepage = () => {
                 </button> */}
               </div>
               <div className="flex flex-col">
-                {transections.map((item) => (
-                  <ExpenceCard item={item} />
-                ))}
+                {transections.slice(0,5).map(
+                  (item) =>
+                    <ExpenceCard key={item._id} item={item} />,
+                )}
               </div>
             </div>
             {/* Income */}
@@ -112,9 +114,9 @@ const Homepage = () => {
                 </Link>
               </div>
               <div className="flex flex-col">
-                {incomes.map((item) => (
-                  <ExpenceCard item={item} />
-                ))}
+                {incomes.slice(0 ,5).map(
+                  (item) => <ExpenceCard key={item._id} item={item} />,
+                )}
               </div>
             </div>
           </main>
